@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\Workshop;
 use Illuminate\Routing\Controller as BaseController;
 use Response;
 
@@ -95,9 +96,9 @@ class EventsController extends BaseController
 
     public function getEventsWithWorkshops()
     {
-        $allEvents = Event::with('workShops')->get();
+        $allEvents = Event::with('workshops')->get();
         return Response::json($allEvents);
-        throw new \Exception('implement in coding task 1');
+        //throw new \Exception('implement in coding task 1');
     }
 
     /*
@@ -176,6 +177,14 @@ class EventsController extends BaseController
 
     public function getFutureEventsWithWorkshops()
     {
-        throw new \Exception('implement in coding task 2');
+
+        $Workshops = Workshop::distinct('event_id')->where('start', '>', now())->get()->pluck('event_id')->toArray();
+        $allFutureEvents = Event::with('workshops')->whereIn('id', $Workshops)->get()->toArray();
+        /**
+         * It should be chunked
+         */
+
+        return response()->json($allFutureEvents, 200)->header('Content-Type', 'application/json');
+        //throw new \Exception('implement in coding task 2');
     }
 }
