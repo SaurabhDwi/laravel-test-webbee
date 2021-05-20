@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MenuItem;
+use App\Services\MenuService;
 use Illuminate\Routing\Controller as BaseController;
 
 class MenuController extends BaseController
@@ -91,10 +92,17 @@ class MenuController extends BaseController
     }
     ]
      */
+    /**
+     * Create parent array where parent is null
+     *
+     */
 
-    public function getMenuItems()
+    public function getMenuItems(MenuService $msObj)
     {
-        $allMenuItems = MenuItem::with('children')->whereNull('parent_id')->get();
+        //$allMenuItems = MenuItem::with('children')->whereNull('parent_id')->get();
+        $allMenuItems = MenuItem::get();
+        $allMenuItems = $msObj->arrangeMenuItems($allMenuItems);
         return response()->json($allMenuItems, 200);
     }
+
 }
