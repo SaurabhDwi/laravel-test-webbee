@@ -96,7 +96,6 @@ class BookingService
     {
         $timeFrames = [];
         $startTime = strtotime($startTime);
-        echo time() . " " . $startTime . " _ ";
         $endTime = strtotime($endTime);
         /**
          * Convert into min.
@@ -104,14 +103,27 @@ class BookingService
         $duration = $duration * 60;
 
         while ($startTime <= $endTime) {
+
             $timeSlot = date("G:i", $startTime);
             $startTime += $duration;
+
+            if (time() > $startTime) {
+                /**
+                 * Past time will skipped from slot.
+                 */
+                continue;
+            }
+
             if ($slotToSkip) {
+                /**
+                 * If slot is available to skip then skip it.
+                 */
                 if (strtotime($slotToSkip['startTime']) <= $startTime && strtotime($slotToSkip['endTime']) > $startTime) {
                     continue;
                 }
             }
             $timeFrames[] = $timeSlot;
+
         }
         return $timeFrames;
     }
