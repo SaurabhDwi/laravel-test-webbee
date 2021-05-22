@@ -160,6 +160,10 @@ class BookingService
                     return $this->errorResponse(__('message.booking.futurebookingerror'), 422);
                 }
 
+                if (time() > strtotime($request['slot'])) {
+                    return $this->errorResponse(__('message.booking.slotexpired'), 422);
+                }
+
                 $availableEventWindows = $this->createWindowSlots($getEventWindows['id'], $bookingDate, $getEventDay, $getEventWindows['duration'], $getEventWindows['max_booking'], $getEventWindows['slot_windows']);
                 if (in_array($request['slot'], $availableEventWindows)) {
 

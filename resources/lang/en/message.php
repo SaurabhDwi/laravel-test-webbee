@@ -12,5 +12,6 @@ return [
         'confirmed' => 'Your booking has been confirmed successfully.',
         'futurebookingerror' => 'Your booking date is not available for booking.',
         'slotnotavailable' => 'Your slot has been completely booked or not available to book. Please select another slot.',
+        'slotexpired' => 'Your submitted slot has been expired',
     ],
 ];
